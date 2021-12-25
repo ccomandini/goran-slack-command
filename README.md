@@ -2,6 +2,8 @@
 
 https://npm.io/package/meme-maker
 
+Install imageMagick
+
 https://www.fastify.io/docs/latest/
 https://github.com/fastify/fastify-formbody
 
