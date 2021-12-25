@@ -35,7 +35,7 @@ const memeResponseGenerator = async (requestBody) => {
     try {
         //console.log(requestBody);
     
-        let imagePath = `/tmp/${requestBody.trigger_id}.png`
+        let imagePath = `./tmp/${requestBody.trigger_id}.png`
 
         const randomSentenceIdx = randomIntFromInterval(0, sentences.length);
 
@@ -101,19 +101,19 @@ fastify.post('/slack/command', (req, reply) => {
     reply.send('... wait, i am thinking ...');
     /*
     {
-        token: 'G3CQHFWBKzb7I2gxJTzKS9s6',
+        token: 'G3CQHFWBKzb7I2gxJ346534TzKS9s6',
         team_id: 'T4DK57363',
         team_domain: 'sayvero',
-        channel_id: 'D01FKBW0S23',
+        channel_id: 'D01FKBW04543S23',
         channel_name: 'directmessage',
-        user_id: 'U01GCNSSQC9',
+        user_id: 'U01GCNSS453453QC9',
         user_name: 'claudio',
         command: '/goran',
         text: '',
-        api_app_id: 'A02RR3MPACE',
+        api_app_id: 'A02534534RR3MPACE',
         is_enterprise_install: 'false',
-        response_url: 'https://hooks.slack.com/commands/T4DK57363/2878922010981/4wHDzlQ7boQ694ToUyUmfdXQ',
-        trigger_id: '2884140174980.149651241207.64abe0c64920c344d17cff322311eeea'
+        response_url: 'https://hooks.slack.com/commands/T4D53453K57363/287892201093453481/4wHD534534zlQ7boQ694ToUyUmfdXQ',
+        trigger_id: '28841401743453453480.149651241207.64abe0c64920c344d17cff322311eeea'
     }
     */
     try{
