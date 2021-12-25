@@ -10,6 +10,8 @@ https://api.slack.com/interactivity/handling#message_responses
 
 https://api.slack.com/reference/messaging/payload
 
+https://api.slack.com/interactivity/slash-commands#responding_to_commands
+
 
 ## Vero's 
 
