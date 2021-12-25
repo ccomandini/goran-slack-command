@@ -13,12 +13,6 @@ const storage = new Storage({
   keyFilename: '../slackcommands-336122-68f2e850d7b0.json'
 })
 
-const selfSignedUrlOptions = {
-  version: 'v2', // defaults to 'v2' if missing.
-  action: 'read',
-  expires: Date.now() + 1000 * 60 * 5 // 5mins
-}
-
 fastify.register(require('fastify-formbody'))
 
 fastify.get('/', async (request, reply) => {
@@ -63,6 +57,12 @@ const memeResponseGenerator = async (requestBody) => {
     const bucketFileId = `${requestBody.trigger_id}`
 
     await storage.bucket(bucketName).upload(imagePath, { destination: bucketFileId })
+
+    const selfSignedUrlOptions = {
+      version: 'v2', // defaults to 'v2' if missing.
+      action: 'read',
+      expires: Date.now() + 1000 * 60 * 5 // 5mins
+    }
 
     const selfSignedUrl = await storage.bucket(bucketName).file(bucketFileId).getSignedUrl(selfSignedUrlOptions)
 
