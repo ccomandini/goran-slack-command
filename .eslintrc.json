@@ -9,7 +9,7 @@
         "standard"
     ],
     "parserOptions": {
-        "ecmaVersion": 13
+        "ecmaVersion": 12
     },
     "rules": {
         "jest/no-disabled-tests": "warn",
