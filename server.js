@@ -39,8 +39,12 @@ const memeResponseGenerator = async (requestBody) => {
 
         const randomSentenceIdx = randomIntFromInterval(0, sentences.length);
 
-        const topline = sentences[randomSentenceIdx].top;
-        const bottomline = sentences[randomSentenceIdx].bottom;
+        const sentence = sentences[randomSentenceIdx];
+
+        console.log(`idx ${randomSentenceIdx} >>> ${JSON.stringify(sentence)}`);
+
+        const topline = sentence.top;
+        const bottomline = sentence.bottom;
 
         let options = {
             image: './goran.png',         // Required
@@ -80,10 +84,7 @@ const memeResponseGenerator = async (requestBody) => {
         });
 
         console.log(`slack call status ${resp.status}`);
-        
-    } catch(err) {
-        console.error(err);
-    } finally{
+
         try {
             if(imagePath){
                 fs.unlinkSync(imagePath);
@@ -91,7 +92,17 @@ const memeResponseGenerator = async (requestBody) => {
         } catch(err) {
             console.error(err);
         }
-    };
+        
+    } catch(err) {
+        console.error(err);
+        try {
+            if(imagePath){
+                fs.unlinkSync(imagePath);
+            }
+        } catch(err) {
+            console.error(err);
+        }
+    } 
     
 
 };
@@ -127,12 +138,22 @@ fastify.post('/slack/command', (req, reply) => {
 
 // Run the server!
 const start = async () => {
+    try{
+        var dir = './tmp';
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
+    }catch(err){
+        fastify.log.error(err);
+        process.exit(1);
+    }
+
     try {
-        await fastify.listen(3000, '0.0.0.0')
+        await fastify.listen(3000, '0.0.0.0');
     } catch (err) {
-    fastify.log.error(err)
-    process.exit(1)
-  }
+        fastify.log.error(err);
+        process.exit(1);
+    }
 }
 
 start();
