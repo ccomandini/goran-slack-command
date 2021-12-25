@@ -6,6 +6,10 @@ https://api.slack.com/interactivity/slash-commands
 
 https://stackoverflow.com/questions/42647024/slack-bot-send-an-image
 
+https://api.slack.com/interactivity/handling#message_responses
+
+https://api.slack.com/reference/messaging/payload
+
 
 ## Vero's 
 

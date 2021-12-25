@@ -72,12 +72,12 @@ const memeResponseGenerator = async (requestBody) => {
       method: 'post',
       url: requestBody.response_url,
       data: {
+        response_type: 'in_channel',
         attachments: [
           {
             fallback: 'Required plain-text summary of the attachment.',
             text: 'Take this',
-            image_url: `${selfSignedUrl}`,
-            response_type: 'in_channel'
+            image_url: `${selfSignedUrl}`
           }
         ]
       }
