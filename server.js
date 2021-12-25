@@ -76,7 +76,8 @@ const memeResponseGenerator = async (requestBody) => {
           {
             fallback: 'Required plain-text summary of the attachment.',
             text: 'Take this',
-            image_url: `${selfSignedUrl}`
+            image_url: `${selfSignedUrl}`,
+            response_type: 'in_channel'
           }
         ]
       }
