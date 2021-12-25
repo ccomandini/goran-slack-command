@@ -1,0 +1,98 @@
+{
+    "sentences":[
+        {
+            "top":"Don't call it pizza",
+            "bottom":"if you put pineapple on top of it",
+            "who": "claudio",
+            "id":1
+        },
+        {
+            "top":"You can never plan the future",
+            "bottom":"by the past",
+            "who": "joe",
+            "id":2
+        },
+        {
+            "top":"You can learn how to use slack",
+            "bottom":"just watching my video tutorial",
+            "who": "goran",
+            "id":3
+        },
+        {
+            "top":"Slack has an interesting reminder feature",
+            "bottom":"/remind @goran to help me tomorrow",
+            "who": "goran",
+            "id":4
+        },
+        {
+            "top":"",
+            "bottom":"Chuck Norris knows Victoria's secret.",
+            "id":5
+        },
+        {
+            "top":"Chuck Norris counted to infinity.",
+            "bottom":"Twice.",
+            "id":6
+        },
+        {
+            "top":"",
+            "bottom":"Chuck Norris can hear sign language.",
+            "id":7
+        },
+        {
+            "top":"",
+            "bottom":"Chuck Norris makes onions cry.",
+            "id":8
+        },
+        {
+            "top":"Chuck Norris can speak French...",
+            "bottom":"In Russian.",
+            "id":9
+        },
+        {
+            "top":"",
+            "bottom":"Chuck Norris found the last digit of pi.",
+            "id":10
+        },
+        {
+            "top":"M.C. Hammer learned the hard way",
+            "bottom":"that Chuck Norris can touch this.",
+            "id":11
+        },
+        {
+            "top":"Sometimes",
+            "bottom":"you just have to pee in the sink.",
+            "id":12
+        },
+        {
+            "top":"",
+            "bottom":"Money never sleeps",
+            "who": "lou",
+            "id":13
+        }
+    ],
+    "people":[
+        {
+            "name":"goran",
+            "photo":"goran.png"
+        },
+        {
+            "name":"claudio",
+            "photo":"claudio.png"
+        },
+        {
+            "name":"joe",
+            "photo":"joe.png"
+        },
+        {
+            "name":"lou",
+            "photo":"lou.png"
+        },
+        {
+            "name":"igor",
+            "photo":"igor.png"
+        }
+    ]
+}
+
+

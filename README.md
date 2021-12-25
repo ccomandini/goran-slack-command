@@ -12,6 +12,25 @@ https://api.slack.com/reference/messaging/payload
 
 https://api.slack.com/interactivity/slash-commands#responding_to_commands
 
+Example of json body
+
+```js
+{
+        token: 'G3CQHFWBKzb7I2gxJ346534TzKS9s6',
+        team_id: 'T4DK57363',
+        team_domain: 'sayvero',
+        channel_id: 'D01FKBW04543S23',
+        channel_name: 'directmessage',
+        user_id: 'U01GCNSS453453QC9',
+        user_name: 'claudio',
+        command: '/goranfy',
+        text: 'banana',
+        api_app_id: 'A02534534RR3MPACE',
+        is_enterprise_install: 'false',
+        response_url: 'https://hooks.slack.com/commands/T4D53453K57363/287892201093453481/4wHD534534zlQ7boQ694ToUyUmfdXQ',
+        trigger_id: '28841401743453453480.149651241207.64abe0c64920c344d17cff322311eeea'
+    }
+```
 
 ## Vero's 
 
@@ -52,6 +71,12 @@ https://www.fastify.io/docs/latest/
 
 https://github.com/fastify/fastify-formbody
 
+### logging
+
+https://github.com/pinojs/pino
+
+https://github.com/pinojs/pino-pretty
+
 
 ## Cloud google
 
@@ -66,9 +91,11 @@ you need a file ```slackcommands-336122-68f2e850d7b0.json``` with the google clo
 
 ## Run it locally
 
-You can expose it with ngrok
+You can expose it with ngrok, like
 
 ```./ngrok http --region=us --hostname=ccomandini.ngrok.io 3000```
+
+(this is an example, you your own configuration for running it or you can use https://localtunnel.github.io/www/)
 
 Then execute
 
@@ -92,3 +119,12 @@ https://chucknorrisfacts.net/top-100
 ## ESLINT
 
 ```eslint *.js --fix```
+
+## SQLITE
+
+https://www.npmjs.com/package/sqlite-sync
+
+
+## Test references
+
+https://www.titanwolf.org/Network/q/ac37e658-925b-46ed-b159-433e7b811c0d/y

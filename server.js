@@ -1,142 +1,54 @@
 const fastify = require('fastify')({ logger: true })
-const memeMaker = require('meme-maker')
-const fs = require('fs')
-const { Storage } = require('@google-cloud/storage')
-const util = require('util')
-const axios = require('axios')
-const sentences = require('./sentences.json')
-
-const bucketName = 'goran-meme'
-
-const storage = new Storage({
-  projectId: 'slackcommands-336122',
-  keyFilename: '../slackcommands-336122-68f2e850d7b0.json'
-})
-
 fastify.register(require('fastify-formbody'))
+const axios = require('axios')
+const { memeResponseGenerator, initMemeGenerator, healthCheckMemeGenerator } = require('./meme_creator')
 
 fastify.get('/', async (request, reply) => {
-  return { serverStatus: `OK ${sentences.length}` }
+  const len = await healthCheckMemeGenerator()
+  return { serverStatus: `OK ${len}` }
 })
 
-function randomIntFromInterval (min, max) { // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min)
-}
-
-const memeResponseGenerator = async (requestBody) => {
-  let imagePath
+const replyInSlackChannel = async (requestBody) => {
   try {
-    // console.log(requestBody);
-
-    const imagePath = `./tmp/${requestBody.trigger_id}.png`
-
-    const randomSentenceIdx = randomIntFromInterval(0, sentences.length - 1)
-
-    const sentence = sentences[randomSentenceIdx]
-
-    console.log(`idx ${randomSentenceIdx} >>> ${JSON.stringify(sentence)}`)
-
-    const topline = sentence.top
-    const bottomline = sentence.bottom
-
-    const options = {
-      image: './goran.png', // Required
-      outfile: imagePath, // Required
-      topText: topline, // Required
-      bottomText: bottomline, // Optional
-      fontSize: 60, // Optional
-      fontFill: '#FFF', // Optional
-      textPos: 'center', // Optional
-      strokeColor: '#000', // Optional
-      strokeWeight: 3 // Optional
+    const selfSignedUrl = await memeResponseGenerator(requestBody.text)
+    if (selfSignedUrl) {
+      const resp = await axios({
+        method: 'post',
+        url: requestBody.response_url,
+        data: {
+          response_type: 'in_channel',
+          attachments: [
+            {
+              fallback: 'Required plain-text summary of the attachment.',
+              text: 'My mom always said life was like a box of chocolates.\nYou never know what you\'re gonna get.\nThis is what i have for you today',
+              image_url: `${selfSignedUrl}`
+            }
+          ]
+        }
+      })
+      console.log(`slack call status ${resp.status}`)
     }
-    const asyncMemeMaker = util.promisify(memeMaker)
-
-    await asyncMemeMaker(options)
-
-    const bucketFileId = `${requestBody.trigger_id}`
-
-    await storage.bucket(bucketName).upload(imagePath, { destination: bucketFileId })
-
-    const selfSignedUrlOptions = {
-      version: 'v2', // defaults to 'v2' if missing.
-      action: 'read',
-      expires: Date.now() + 1000 * 60 * 5 // 5mins
-    }
-
-    const selfSignedUrl = await storage.bucket(bucketName).file(bucketFileId).getSignedUrl(selfSignedUrlOptions)
-
-    // console.log(`call ${requestBody.response_url} with ${selfSignedUrl}`);
-
-    const resp = await axios({
-      method: 'post',
-      url: requestBody.response_url,
-      data: {
-        response_type: 'in_channel',
-        attachments: [
-          {
-            fallback: 'Required plain-text summary of the attachment.',
-            text: 'Take this',
-            image_url: `${selfSignedUrl}`
-          }
-        ]
-      }
-    })
-
-    console.log(`slack call status ${resp.status}`)
-
-    try {
-      if (imagePath) {
-        fs.unlinkSync(imagePath)
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  } catch (err) {
-    console.error(err)
-    try {
-      if (imagePath) {
-        fs.unlinkSync(imagePath)
-      }
-    } catch (err) {
-      console.error(err)
-    }
+  } catch (e) {
+    fastify.log(e)
   }
 }
 
+/*
+    See the readme for an example of req.body
+*/
 fastify.post('/slack/command', (req, reply) => {
-  reply.send('... wait, i am thinking ...')
-  /*
-    {
-        token: 'G3CQHFWBKzb7I2gxJ346534TzKS9s6',
-        team_id: 'T4DK57363',
-        team_domain: 'sayvero',
-        channel_id: 'D01FKBW04543S23',
-        channel_name: 'directmessage',
-        user_id: 'U01GCNSS453453QC9',
-        user_name: 'claudio',
-        command: '/goran',
-        text: '',
-        api_app_id: 'A02534534RR3MPACE',
-        is_enterprise_install: 'false',
-        response_url: 'https://hooks.slack.com/commands/T4D53453K57363/287892201093453481/4wHD534534zlQ7boQ694ToUyUmfdXQ',
-        trigger_id: '28841401743453453480.149651241207.64abe0c64920c344d17cff322311eeea'
-    }
-    */
+  reply.send('🤔 ... guru is musing ... 🤯')
+  // console.log(req.body)
   try {
-    memeResponseGenerator(req.body)
+    replyInSlackChannel(req.body)
   } catch (e) {
     console.log(e)
   }
 })
 
-// Run the server!
 const start = async () => {
   try {
-    const dir = './tmp'
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir)
-    }
+    await initMemeGenerator() // set up temp folder and other required stuff before starting
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)
@@ -150,4 +62,4 @@ const start = async () => {
   }
 }
 
-start()
+start() // launch the server
