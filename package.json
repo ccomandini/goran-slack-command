@@ -1,0 +1,36 @@
+{
+  "name": "goran-slack-command",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ccomandini/goran-slack-command.git"
+  },
+  "author": "ccomandini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ccomandini/goran-slack-command/issues"
+  },
+  "homepage": "https://github.com/ccomandini/goran-slack-command#readme",
+  "dependencies": {
+    "@google-cloud/storage": "^5.16.1",
+    "axios": "^0.24.0",
+    "fastify": "^3.25.2",
+    "fastify-formbody": "^5.2.0",
+    "gm": "^1.23.1",
+    "meme-maker": "^2.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "prettier": "2.5.1"
+  }
+}
