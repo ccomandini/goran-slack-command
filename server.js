@@ -30,7 +30,7 @@ const memeResponseGenerator = async (requestBody) => {
 
     const imagePath = `./tmp/${requestBody.trigger_id}.png`
 
-    const randomSentenceIdx = randomIntFromInterval(0, sentences.length)
+    const randomSentenceIdx = randomIntFromInterval(0, sentences.length - 1)
 
     const sentence = sentences[randomSentenceIdx]
 
