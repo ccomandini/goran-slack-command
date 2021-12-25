@@ -61,21 +61,37 @@ const memeResponseGenerator = async (author) => {
   let imagePath
   let selfSignedUrl
   try {
+    let sentence; let person; let sentenceIdx; let personIdx
 
-    const sentence = memeConfig.sentences[randomSentenceIdx]
-    const person = memeConfig.people[randomPersonIdx]
-
-    if (author){
-      logger.info(`meme for author ${author}`)
-      const randomSentenceIdx = randomIntFromInterval(0, memeConfig.sentences.length - 1)
-      const randomPersonIdx = randomIntFromInterval(0, memeConfig.people.length - 1)
-    }else{
-      const randomSentenceIdx = randomIntFromInterval(0, memeConfig.sentences.length - 1)
-      const randomPersonIdx = randomIntFromInterval(0, memeConfig.people.length - 1)
+    if (author) {
+      // if there is an author into the command sent by slack i will try to load that author
+      const authorSanitized = author.toLowerCase().trim()
+      logger.info(`meme for author ${authorSanitized}`)
+      person = memeConfig.people.find(p => p.name === authorSanitized)
+      if (person) {
+        personIdx = -1
+        const sentences = memeConfig.sentences.filter(x => x.who === undefined || x.who === authorSanitized || x.who === '')
+        // i can use a generic sentence with no author or sentences by the author
+        logger.info(`filtered sentences len > ${sentences.length}`)
+        sentenceIdx = randomIntFromInterval(0, sentences.length - 1)
+        sentence = sentences[sentenceIdx]
+      } else {
+        // if someone searched for an author not present, i will use the duck
+        personIdx = -2
+        person = { name: 'duck', photo: 'duck.png' }
+        sentenceIdx = randomIntFromInterval(0, memeConfig.sentences.length - 1)
+        sentence = memeConfig.sentences[sentenceIdx]
+      }
+    } else {
+      // command invoked without specifying the author
+      sentenceIdx = randomIntFromInterval(0, memeConfig.sentences.length - 1)
+      personIdx = randomIntFromInterval(0, memeConfig.people.length - 1)
+      person = memeConfig.people[personIdx]
+      sentence = memeConfig.sentences[sentenceIdx]
     }
 
-    logger.info(`idx ${randomSentenceIdx} >>> ${JSON.stringify(sentence)}`)
-    logger.info(`idx ${randomPersonIdx} >>> ${JSON.stringify(person)}`)
+    logger.info(`idx ${sentenceIdx} >>> ${JSON.stringify(sentence)}`)
+    logger.info(`idx ${personIdx} >>> ${JSON.stringify(person)}`)
 
     const topline = sentence.top
     const bottomline = sentence.bottom
@@ -105,7 +121,7 @@ const memeResponseGenerator = async (author) => {
       }
     }
 
-    logger.info('meme generation')
+    logger.info('no cached version, meme generation')
 
     // if not create the meme and store it in google storage
     imagePath = await memeCreator(memeID, person.photo, topline, bottomline)
