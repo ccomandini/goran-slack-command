@@ -145,3 +145,9 @@ https://www.npmjs.com/package/sqlite-sync
 https://www.titanwolf.org/Network/q/ac37e658-925b-46ed-b159-433e7b811c0d/y
 
 https://jestjs.io/docs/mock-functions
+
+
+## Instance used:
+https://console.cloud.google.com/storage/browser/goran-meme
+
+https://console.cloud.google.com/compute/instances?authuser=1&project=slackcommands-336122
