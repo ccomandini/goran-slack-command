@@ -109,11 +109,6 @@
             "id": 20
         },
         {
-            "top":"",
-            "bottom":"Stupid is as stupid does",
-            "id": 20
-        },
-        {
             "top":"The less I needed",
             "bottom":"the better I felt",
             "id": 21
@@ -132,8 +127,38 @@
         {
             "top":"Goodness can be found sometimes",
             "bottom":"in the middle of hell",
-            "id": 24,
+            "id": 24
+        },
+        {
+            "top":"a fool with a tool",
+            "bottom":"is still a fool",
+            "id": 25,
             "who":"igor"
+        },
+        {
+            "top":"Let' em learn",
+            "bottom":"or let' em die",
+            "id": 26
+        },
+        {
+            "top":"I put on some bacon and eggs and",
+            "bottom":"celebrated with an extra quart of beer",
+            "id": 27
+        },
+        {
+            "top":"Now let's each have",
+            "bottom":"a good tall drink",
+            "id": 28
+        },
+        {
+            "top":"",
+            "bottom":"Stupid is as stupid does",
+            "id": 29
+        },
+        {
+            "top":"Genius might be the ability to say",
+            "bottom":"a profound thing in a simple way",
+            "id": 30
         }
         
     ],
