@@ -31,37 +31,37 @@
         },
         {
             "top":"Chuck Norris counted to infinity.",
-            "bottom":"Twice.",
+            "bottom":"Twice",
             "id":6
         },
         {
             "top":"",
-            "bottom":"Chuck Norris can hear sign language.",
+            "bottom":"Chuck Norris can hear sign language",
             "id":7
         },
         {
             "top":"",
-            "bottom":"Chuck Norris makes onions cry.",
+            "bottom":"Chuck Norris makes onions cry",
             "id":8
         },
         {
             "top":"Chuck Norris can speak French...",
-            "bottom":"In Russian.",
+            "bottom":"In Russian",
             "id":9
         },
         {
             "top":"",
-            "bottom":"Chuck Norris found the last digit of pi.",
+            "bottom":"Chuck Norris found the last digit of pi",
             "id":10
         },
         {
             "top":"M.C. Hammer learned the hard way",
-            "bottom":"that Chuck Norris can touch this.",
+            "bottom":"that Chuck Norris can touch this",
             "id":11
         },
         {
             "top":"Sometimes",
-            "bottom":"you just have to pee in the sink.",
+            "bottom":"you just have to pee in the sink",
             "id":12
         },
         {
@@ -69,6 +69,44 @@
             "bottom":"Money never sleeps",
             "who": "lou",
             "id":13
+        },
+        {
+            "top":"It's the job that's never started",
+            "bottom":"as takes longest to finish",
+            "id":14
+        },
+        {
+            "top":"We don't even ask happiness",
+            "bottom":"just a little less pain",
+            "id":15
+        },
+        {
+            "top":"We don't even ask happiness",
+            "bottom":"just a little less pain",
+            "id":16
+        },
+        {
+            "top":"You're the most unknown famous man",
+            "bottom":"I ever met",
+            "who": "igor",
+            "id":17
+        },
+        {
+            "top":"Keep alway in mind",
+            "bottom":"the florentine rooster",
+            "who": "joe",
+            "id":18
+        },
+        {
+            "top":"",
+            "bottom":"Teasing is an art",
+            "who": "joe",
+            "id":19
+        },
+        {
+            "top":"Chuck Norris can kill two stones",
+            "bottom":"with one bird",
+            "id": 20
         }
     ],
     "people":[
@@ -91,8 +129,25 @@
         {
             "name":"igor",
             "photo":"igor.png"
+        },
+        {
+            "name":"tino",
+            "photo":"tino.png"
+        },
+        {
+            "name":"valentin",
+            "photo":"tino.png"
         }
-    ]
+
+    ],
+    "firstReplyOptions":[
+        "🤔 ... guru is musing ... 🤯", 
+        "🕵️ ... looking into my wisdom for you ... ✨", 
+        "... at the bathroom 🤷‍♂️, will be back in a sec ... ⏲️"
+    ],
+    "memeOpeningSentences":[
+        "My mom always said life was like a box of chocolates.\nYou never know what you're gonna get.\nThis is what i have for you today",
+        "All we have to decide is what to do with the time that is given us."]
 }
 
 

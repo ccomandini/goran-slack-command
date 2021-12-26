@@ -19,6 +19,7 @@
   "dependencies": {
     "@google-cloud/storage": "^5.16.1",
     "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
     "eslint-plugin-jest": "^25.3.0",
     "fastify": "^3.25.2",
     "fastify-formbody": "^5.2.0",

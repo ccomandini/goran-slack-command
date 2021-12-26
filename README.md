@@ -113,8 +113,9 @@ then
 
 ### create a firewall rule on port 3000
 
-## Facts
+## Facts and quotes
 https://chucknorrisfacts.net/top-100
+https://www.goodreads.com/quotes/tag/bukowski
 
 ## ESLINT
 

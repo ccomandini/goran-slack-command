@@ -1,16 +1,17 @@
 const fastify = require('fastify')({ logger: true })
 fastify.register(require('fastify-formbody'))
 const axios = require('axios')
-const { memeResponseGenerator, initMemeGenerator, healthCheckMemeGenerator } = require('./meme_creator')
+const { memeCreator } = require('./meme_creator')
 
 fastify.get('/', async (request, reply) => {
-  const len = await healthCheckMemeGenerator()
-  return { serverStatus: `OK ${len}` }
+  const status = await memeCreator.healthCheckMemeGenerator()
+  return { serverStatus: status }
 })
 
 const replyInSlackChannel = async (requestBody) => {
   try {
-    const selfSignedUrl = await memeResponseGenerator(requestBody.text)
+    const selfSignedUrl = await memeCreator.memeResponseGenerator(requestBody.text, requestBody.user_name)
+    const opening = await memeCreator.getMemeOpening()
     if (selfSignedUrl) {
       const resp = await axios({
         method: 'post',
@@ -19,14 +20,15 @@ const replyInSlackChannel = async (requestBody) => {
           response_type: 'in_channel',
           attachments: [
             {
-              fallback: 'Required plain-text summary of the attachment.',
-              text: 'My mom always said life was like a box of chocolates.\nYou never know what you\'re gonna get.\nThis is what i have for you today',
+              fallback: '🧙 You just got a pearl of widsom from goranify 🤌',
+              text: opening,
               image_url: `${selfSignedUrl}`
             }
           ]
         }
       })
       console.log(`slack call status ${resp.status}`)
+      // record stats about who is using it
     }
   } catch (e) {
     fastify.log(e)
@@ -36,8 +38,9 @@ const replyInSlackChannel = async (requestBody) => {
 /*
     See the readme for an example of req.body
 */
-fastify.post('/slack/command', (req, reply) => {
-  reply.send('🤔 ... guru is musing ... 🤯')
+fastify.post('/slack/command', async (req, reply) => {
+  const msg = await memeCreator.getFirstReply()
+  reply.send(msg)
   // console.log(req.body)
   try {
     replyInSlackChannel(req.body)
@@ -48,7 +51,7 @@ fastify.post('/slack/command', (req, reply) => {
 
 const start = async () => {
   try {
-    await initMemeGenerator() // set up temp folder and other required stuff before starting
+    await memeCreator.initMemeGenerator() // set up temp folder and other required stuff before starting
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)
