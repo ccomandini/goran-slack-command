@@ -107,7 +107,35 @@
             "top":"Chuck Norris can kill two stones",
             "bottom":"with one bird",
             "id": 20
+        },
+        {
+            "top":"",
+            "bottom":"Stupid is as stupid does",
+            "id": 20
+        },
+        {
+            "top":"The less I needed",
+            "bottom":"the better I felt",
+            "id": 21
+        },
+        {
+            "top":"Almost everybody is born a genius",
+            "bottom":"and buried an idiot",
+            "id": 22
+        },
+        {
+            "top":"Hey baby, when I write code",
+            "bottom":"I'm the hero of my shit",
+            "id": 23,
+            "who":"igor"
+        },
+        {
+            "top":"Goodness can be found sometimes",
+            "bottom":"in the middle of hell",
+            "id": 24,
+            "who":"igor"
         }
+        
     ],
     "people":[
         {

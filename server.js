@@ -2,6 +2,17 @@ const fastify = require('fastify')({ logger: true })
 fastify.register(require('fastify-formbody'))
 const axios = require('axios')
 const { memeCreator } = require('./meme_creator')
+const dotenv = require('dotenv').config()
+const pino = require('pino')
+const logger = pino({
+  transport: {
+    target: 'pino-pretty'
+  }
+})
+
+if (dotenv.error) {
+  throw new Error(dotenv.error)
+}
 
 fastify.get('/', async (request, reply) => {
   const status = await memeCreator.healthCheckMemeGenerator()
@@ -27,11 +38,11 @@ const replyInSlackChannel = async (requestBody) => {
           ]
         }
       })
-      console.log(`slack call status ${resp.status}`)
+      logger.info(`slack call status ${resp.status}`)
       // record stats about who is using it
     }
   } catch (e) {
-    fastify.log(e)
+    logger.warn(e)
   }
 }
 
@@ -45,7 +56,7 @@ fastify.post('/slack/command', async (req, reply) => {
   try {
     replyInSlackChannel(req.body)
   } catch (e) {
-    console.log(e)
+    logger.error(e)
   }
 })
 
@@ -53,14 +64,14 @@ const start = async () => {
   try {
     await memeCreator.initMemeGenerator() // set up temp folder and other required stuff before starting
   } catch (err) {
-    fastify.log.error(err)
+    logger.error(err)
     process.exit(1)
   }
 
   try {
     await fastify.listen(3000, '0.0.0.0')
   } catch (err) {
-    fastify.log.error(err)
+    logger.error(err)
     process.exit(1)
   }
 }

@@ -11,14 +11,17 @@ const logger = pino({
 })
 const dotenv = require('dotenv').config()
 
+if (dotenv.error) {
+  throw new Error(dotenv.error)
+}
 
 // google storage setup
 const storage = new Storage({
-  projectId: 'slackcommands-336122',
-  keyFilename: '../slackcommands-336122-68f2e850d7b0.json'
+  projectId: process.env.googleStorageProjectId,
+  keyFilename: process.env.serviceAccountFile
 })
 
-const bucketName = 'goran-meme'
+const bucketName = process.env.bucketName
 
 const memeConfig = require('./config_files/db.json')
 
@@ -46,17 +49,9 @@ const memeCreator = {
 
     await asyncMemeMaker(options)
 
-    await storage.bucket(bucketName).upload(imagePath, { destination: memeID })
+    await this.saveFileOnCloudStorage(imagePath, memeID)
 
-    logger.info('saving on db...')
-
-    const res = sqlite.insert('memes', { meme_google_storage_path: imagePath, meme_id: memeID })
-
-    if (res.error) {
-      logger.info(`error during saving on db >>> ${res.error}`)
-    } else {
-      logger.info('saved')
-    }
+    await this.saveMemeOnDB(imagePath, memeID)
 
     return imagePath
   },
@@ -75,23 +70,28 @@ const memeCreator = {
         if (person) {
           personIdx = -1
           const sentences = memeConfig.sentences.filter(x => x.who === undefined || x.who === authorSanitized || x.who === '')
-          // i can use a generic sentence with no author or sentences by the author
+          // i can use a generic sentence with no author or sentences by the author but not sentences of other authors
           logger.info(`filtered sentences len > ${sentences.length}`)
           sentenceIdx = randomIntFromInterval(0, sentences.length - 1)
           sentence = sentences[sentenceIdx]
         } else {
-        // if someone searched for an author not present, i will use the duck
+          // if someone searched for an author not present, i will use the duck
           personIdx = -2
           person = { name: 'duck', photo: 'duck.png' }
-          sentenceIdx = randomIntFromInterval(0, memeConfig.sentences.length - 1)
-          sentence = memeConfig.sentences[sentenceIdx]
+          // i can use a generic sentence with no author
+          const sentences = memeConfig.sentences.filter(x => x.who === undefined)
+          sentenceIdx = randomIntFromInterval(0, sentences.length - 1)
+          sentence = sentences[sentenceIdx]
         }
       } else {
-      // command invoked without specifying the author
-        sentenceIdx = randomIntFromInterval(0, memeConfig.sentences.length - 1)
+        // command invoked without specifying the author, pick a random one
         personIdx = randomIntFromInterval(0, memeConfig.people.length - 1)
         person = memeConfig.people[personIdx]
-        sentence = memeConfig.sentences[sentenceIdx]
+        const sentences = memeConfig.sentences.filter(x => x.who === undefined || x.who === person.name || x.who === '')
+        // i can use a generic sentence with no author or sentences by the author selected randomly
+        logger.info(`filtered sentences len > ${sentences.length}`)
+        sentenceIdx = randomIntFromInterval(0, sentences.length - 1)
+        sentence = sentences[sentenceIdx]
       }
 
       logger.info(`idx ${sentenceIdx} >>> ${JSON.stringify(sentence)}`)
@@ -102,26 +102,14 @@ const memeCreator = {
 
       const memeID = `${person.name}_${sentence.id}`
 
-      const selfSignedUrlOptions = {
-        version: 'v2', // defaults to 'v2' if missing.
-        action: 'read',
-        expires: Date.now() + 1000 * 60 * 5 // 5mins
-      }
+      const isMemeAvailable = this.fetchMemeFromDB(memeID)
 
-      // check if already into the db, this is an optimization for not re-creating the meme if already present
-      const rs = sqlite.run('SELECT meme_google_storage_path FROM memes WHERE meme_id = \'' + memeID + '\'  LIMIT 1')
-      if (rs.error) {
-        logger.error(`db error >>> ${rs.error}`)
-      } else {
-        if (rs && rs.length === 1) {
-          const memeGoogleStoragePath = rs[0].meme_google_storage_path
-          logger.info(`cached memeGoogleStoragePath == ${memeGoogleStoragePath}`)
-          selfSignedUrl = await storage.bucket(bucketName).file(memeID).getSignedUrl(selfSignedUrlOptions)
-          if (selfSignedUrl) {
-            return selfSignedUrl
-          } else {
-            logger.warn('Generation of self signed url for cached meme failed')
-          }
+      if (isMemeAvailable) {
+        selfSignedUrl = await this.getSelfSignedUrl(memeID)
+        if (selfSignedUrl) {
+          return selfSignedUrl
+        } else {
+          logger.warn('Generation of self signed url for cached meme failed')
         }
       }
 
@@ -130,7 +118,7 @@ const memeCreator = {
       // if not create the meme and store it in google storage
       imagePath = await this.memeBuilder(memeID, person.photo, topline, bottomline)
 
-      selfSignedUrl = await storage.bucket(bucketName).file(memeID).getSignedUrl(selfSignedUrlOptions)
+      selfSignedUrl = await this.getSelfSignedUrl(memeID)
 
       try {
         if (imagePath) {
@@ -155,8 +143,46 @@ const memeCreator = {
     return selfSignedUrl
   },
 
+  getSelfSignedUrl: async function (memeID) {
+    const selfSignedUrlOptions = {
+      version: 'v2', // defaults to 'v2' if missing.
+      action: 'read',
+      expires: Date.now() + 1000 * 60 * 5 // 5mins
+    }
+    const selfSignedUrl = await storage.bucket(bucketName).file(memeID).getSignedUrl(selfSignedUrlOptions)
+    return selfSignedUrl
+  },
+
+  saveFileOnCloudStorage: async function (imagePath, memeID) {
+    await storage.bucket(bucketName).upload(imagePath, { destination: memeID })
+  },
+
+  fetchMemeFromDB: async function (memeID) {
+    // check if already into the db, this is an optimization for not re-creating the meme if already present
+    const rs = sqlite.run('SELECT meme_google_storage_path FROM memes WHERE meme_id = \'' + memeID + '\'  LIMIT 1')
+    if (rs.error) {
+      logger.error(`db error >>> ${rs.error}`)
+      return false
+    } else {
+      return rs && rs.length === 1
+    }
+  },
+
+  saveMemeOnDB: async function (imagePath, memeID) {
+    logger.info('saving on db...')
+
+    const res = sqlite.insert('memes', { meme_google_storage_path: imagePath, meme_id: memeID })
+
+    if (res.error) {
+      logger.info(`error during saving on db >>> ${res.error}`)
+    } else {
+      logger.info('saved')
+    }
+  },
+
   dbWarmUp: async function () {
-    sqlite.connect('./meme.sqlite.db')
+    logger.info(`DB file ${process.env.dbFile}`)
+    sqlite.connect(process.env.dbFile)
     const rs = sqlite.run('SELECT meme_id FROM memes ORDER BY id DESC LIMIT 0,1')
     if (rs.error) {
       await this.createDB()
@@ -179,7 +205,12 @@ const memeCreator = {
   initMemeGenerator: async function () {
     const dir = './tmp'
     if (!fs.existsSync(dir)) {
-      logger.info('temp folder setup')
+      logger.info('temp folder creation')
+      fs.mkdirSync(dir)
+    } else {
+      logger.info('temp folder deletion')
+      fs.rmdirSync(dir)
+      logger.info('temp folder creation')
       fs.mkdirSync(dir)
     }
     logger.info('db setup')
@@ -194,7 +225,7 @@ const memeCreator = {
   getFirstReply: async () => {
     const firstReplyIdx = randomIntFromInterval(0, memeConfig.firstReplyOptions.length - 1)
     const reply = memeConfig.firstReplyOptions[firstReplyIdx]
-    logger.info(`firstReplyIdx: ${firstReplyIdx} => ${reply}`)
+    logger.debug(`firstReplyIdx: ${firstReplyIdx} => ${reply}`)
     return reply
   },
 
@@ -207,6 +238,7 @@ const memeCreator = {
 }
 
 exports.memeCreator = memeCreator
+// functions are probably more efficient during treeshaking but atm the object looks easier to be tested
 // exports.healthCheckMemeGenerator = healthCheckMemeGenerator
 // exports.memeResponseGenerator = memeResponseGenerator
 // exports.initMemeGenerator = initMemeGenerator

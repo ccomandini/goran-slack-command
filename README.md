@@ -86,10 +86,16 @@ https://github.com/googleapis/nodejs-storage/blob/main/samples/uploadFile.js
 
 https://github.com/googleapis/nodejs-storage/blob/main/samples/generateSignedUrl.js
 
-you need a file ```slackcommands-336122-68f2e850d7b0.json``` with the google cloud service account into the parent folder of this folder
+you need a file like ```slackcommands-336122-68f2e850d7b0.json``` with the google cloud service account, into the `.env` file you must declare the path
 
 
 ## Run it locally
+
+Create the env file 
+
+```cp env.template .env```
+
+edit the file just created specifying the google cloud account info (project id, bucket name and service account json file path)
 
 You can expose it with ngrok, like
 
@@ -111,6 +117,14 @@ then
 
 ```forever start server.js```
 
+open your browser
+
+```http://localhost:3000/```
+
+you should see something like
+
+```{"serverStatus":{"config":true,"people":7,"sentences":25}}```
+
 ### create a firewall rule on port 3000
 
 ## Facts and quotes
@@ -129,3 +143,5 @@ https://www.npmjs.com/package/sqlite-sync
 ## Test references
 
 https://www.titanwolf.org/Network/q/ac37e658-925b-46ed-b159-433e7b811c0d/y
+
+https://jestjs.io/docs/mock-functions
