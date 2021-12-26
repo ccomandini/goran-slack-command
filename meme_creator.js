@@ -156,6 +156,8 @@ const memeCreator = {
 
   saveFileOnCloudStorage: async function (imagePath, memeID) {
     await storage.bucket(bucketName).upload(imagePath, { destination: memeID })
+    const publicRes = await storage.bucket(bucketName).file(memeID).makePublic()
+    logger.info(`publicRes > ${publicRes}`)
   },
 
   fetchMemeFromDB: async function (memeID) {
