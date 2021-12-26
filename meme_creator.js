@@ -145,6 +145,8 @@ const memeCreator = {
   },
 
   getSelfSignedUrl: async function (memeID) {
+    /* slack is not happy with temporary urls.
+    files are not public and the url is the public one
     const selfSignedUrlOptions = {
       version: 'v2', // defaults to 'v2' if missing.
       action: 'read',
@@ -152,12 +154,13 @@ const memeCreator = {
     }
     const selfSignedUrl = await storage.bucket(bucketName).file(memeID).getSignedUrl(selfSignedUrlOptions)
     return selfSignedUrl
+    */
+    return `https://storage.googleapis.com/${bucketName}/${memeID}`
   },
 
   saveFileOnCloudStorage: async function (imagePath, memeID) {
     await storage.bucket(bucketName).upload(imagePath, { destination: memeID })
-    const publicRes = await storage.bucket(bucketName).file(memeID).makePublic()
-    logger.info(`publicRes > ${publicRes}`)
+    await storage.bucket(bucketName).file(memeID).makePublic()
   },
 
   fetchMemeFromDB: async function (memeID) {
