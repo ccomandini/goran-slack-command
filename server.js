@@ -1,9 +1,6 @@
 const fastify = require('fastify')({
   logger: {
-    prettyPrint: {
-      ignore: 'pid,hostname,reqId,responseTime,req,res',
-      messageFormat: '{msg} [id={reqId} {req.method} {req.url}]'
-    }
+    prettyPrint: true
   }
 })
 fastify.register(require('fastify-formbody'))
