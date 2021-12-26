@@ -210,7 +210,7 @@ const memeCreator = {
       fs.mkdirSync(dir)
     } else {
       logger.info('temp folder deletion')
-      fs.rmdirSync(dir, { recursive: true, force: true })
+      fs.rmSync(dir, { recursive: true, force: true })
       logger.info('temp folder creation')
       fs.mkdirSync(dir)
     }

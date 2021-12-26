@@ -1,4 +1,8 @@
-const fastify = require('fastify')({ logger: true })
+const fastify = require('fastify')({
+  logger: {
+    prettyPrint: true
+  }
+})
 fastify.register(require('fastify-formbody'))
 const axios = require('axios')
 const { memeCreator } = require('./meme_creator')
