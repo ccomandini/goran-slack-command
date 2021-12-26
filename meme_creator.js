@@ -94,14 +94,14 @@ const memeCreator = {
         sentence = sentences[sentenceIdx]
       }
 
-      logger.info(`idx ${sentenceIdx} >>> ${JSON.stringify(sentence)}`)
-      logger.info(`idx ${personIdx} >>> ${JSON.stringify(person)}`)
+      logger.debug(`idx ${sentenceIdx} >>> ${JSON.stringify(sentence)}`)
+      logger.debug(`idx ${personIdx} >>> ${JSON.stringify(person)}`)
 
       const topline = sentence.top
       const bottomline = sentence.bottom
 
       const memeID = `${person.name}_${sentence.id}`
-
+      logger.info(`memeID >> ${memeID}`)
       const isMemeAvailable = await this.fetchMemeFromDB(memeID)
       logger.info(`isMemeAvailable >> ${isMemeAvailable}`)
       if (isMemeAvailable) {
