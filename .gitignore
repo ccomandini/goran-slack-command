@@ -105,3 +105,6 @@ dist
 
 # SQLITE db
 *.sqlite.db
+
+# the temp folder
+tmp
