@@ -2,8 +2,8 @@ const fastify = require('fastify')({
   logger: {
     prettyPrint: {
       translateTime: true,
-      ignore: 'pid,hostname,reqId,req,res',
-      messageFormat: '{msg} status code {res.statusCode} in {responseTime}'
+      ignore: 'pid,hostname,reqId,req,res,responseTime',
+      messageFormat: '{msg} {req.url} status code {res.statusCode} in {responseTime}'
     }
   }
 })

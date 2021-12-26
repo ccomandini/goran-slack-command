@@ -65,13 +65,13 @@ const memeCreator = {
       if (author) {
       // if there is an author into the command sent by slack i will try to load that author
         const authorSanitized = author.toLowerCase().trim()
-        logger.info(`meme for author ${authorSanitized}`)
+        logger.debug(`meme for author ${authorSanitized}`)
         person = memeConfig.people.find(p => p.name === authorSanitized)
         if (person) {
           personIdx = -1
           const sentences = memeConfig.sentences.filter(x => x.who === undefined || x.who === authorSanitized || x.who === '')
           // i can use a generic sentence with no author or sentences by the author but not sentences of other authors
-          logger.info(`filtered sentences len > ${sentences.length}`)
+          logger.debug(`filtered sentences len > ${sentences.length}`)
           sentenceIdx = randomIntFromInterval(0, sentences.length - 1)
           sentence = sentences[sentenceIdx]
         } else {
@@ -118,7 +118,7 @@ const memeCreator = {
       // if not create the meme and store it in google storage
       imagePath = await this.memeBuilder(memeID, person.photo, topline, bottomline)
 
-      logger.info(`meme generated ${imagePath}`)
+      logger.debug(`meme generated ${imagePath}`)
       selfSignedUrl = await this.getSelfSignedUrl(memeID)
 
       try {
@@ -170,14 +170,14 @@ const memeCreator = {
   },
 
   saveMemeOnDB: async function (imagePath, memeID) {
-    logger.info('saving on db...')
+    logger.debug('saving on db...')
 
     const res = sqlite.insert('memes', { meme_google_storage_path: imagePath, meme_id: memeID })
 
     if (res.error) {
       logger.info(`error during saving on db >>> ${res.error}`)
     } else {
-      logger.info('saved')
+      logger.info('saved on db')
     }
   },
 
