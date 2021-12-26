@@ -102,8 +102,8 @@ const memeCreator = {
 
       const memeID = `${person.name}_${sentence.id}`
 
-      const isMemeAvailable = this.fetchMemeFromDB(memeID)
-
+      const isMemeAvailable = await this.fetchMemeFromDB(memeID)
+      logger.info(`isMemeAvailable >> ${isMemeAvailable}`)
       if (isMemeAvailable) {
         selfSignedUrl = await this.getSelfSignedUrl(memeID)
         if (selfSignedUrl) {
@@ -118,6 +118,7 @@ const memeCreator = {
       // if not create the meme and store it in google storage
       imagePath = await this.memeBuilder(memeID, person.photo, topline, bottomline)
 
+      logger.info(`meme generated ${imagePath}`)
       selfSignedUrl = await this.getSelfSignedUrl(memeID)
 
       try {
