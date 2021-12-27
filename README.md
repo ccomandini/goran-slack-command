@@ -151,3 +151,14 @@ https://jestjs.io/docs/mock-functions
 https://console.cloud.google.com/storage/browser/goran-meme
 
 https://console.cloud.google.com/compute/instances?authuser=1&project=slackcommands-336122
+
+# Automate upgrade
+```
+cp upgrade.sh ..
+chmod +x upgrade.sh
+crontab -e
+```
+and add this to upgrade everyday at midnight (adapt it with your home folder path)
+```
+0 0 * * * /bin/bash /home/c_comandini/upgrade.sh 1> /home/c_comandini/crontab.log 2> /home/c_comandini/crontab_err.log
+```
