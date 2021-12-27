@@ -146,7 +146,7 @@ const memeCreator = {
 
   getSelfSignedUrl: async function (memeID) {
     /* slack is not happy with temporary urls.
-    files are not public and the url is the public one
+    files are now public and the url is the public one
     const selfSignedUrlOptions = {
       version: 'v2', // defaults to 'v2' if missing.
       action: 'read',
