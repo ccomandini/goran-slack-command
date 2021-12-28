@@ -1,5 +1,9 @@
 # goran-slack-command
 
+## Node
+
+with nvm https://github.com/nvm-sh/nvm install node v16.13.1 (the latest LTS at the moment)
+
 ## Info
 
 https://api.slack.com/interactivity/slash-commands
