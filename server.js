@@ -77,7 +77,16 @@ const start = async () => {
   }
 
   try {
-    await fastify.listen(3000, '0.0.0.0')
+    let port = process.env.PORT
+    if (!port) {
+      port = 3000
+    }
+    let bindAddress = process.env.BIND_ADDR
+    if (!bindAddress) {
+      bindAddress = '0.0.0.0'
+    }
+    logger.info(`Server starting on bind address ${bindAddress} and port ${port}`)
+    await fastify.listen(port, bindAddress)
   } catch (err) {
     logger.error(err)
     process.exit(1)
