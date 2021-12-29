@@ -159,7 +159,43 @@
             "top":"Genius might be the ability to say",
             "bottom":"a profound thing in a simple way",
             "id": 30
+        },
+        {
+            "top":"What 1 developer can do in 1 month",
+            "bottom":"2 developer can do in 2 months",
+            "id": 31,
+            "who":"claudio"
+        },
+        {
+            "top":"If you poop better into the office's wc",
+            "bottom":"you are living for working",
+            "id": 32,
+            "who":"claudio"
+        },
+        {
+            "top":"I love it",
+            "bottom":"when a plan comes together",
+            "id": 33
+        },
+        {
+            "top":"Lord give me patience",
+            "bottom":"with strength it will be a massacre",
+            "id": 34
+        },
+        {
+            "top":"Even Picasso",
+            "bottom":"would say that it's a mess",
+            "id": 35
+        },
+        {
+            "top":"Farts",
+            "bottom":"are the bean souls",
+            "id": 36
         }
+
+         
+
+        
         
     ],
     "people":[
