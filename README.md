@@ -170,3 +170,5 @@ and add this to upgrade everyday at midnight (adapt it with your home folder pat
 ## DynDns
 
 https://www.duckdns.org/domains
+
+http://ccomandini.duckdns.org:3300/
