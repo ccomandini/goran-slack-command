@@ -166,3 +166,7 @@ and add this to upgrade everyday at midnight (adapt it with your home folder pat
 ```
 0 0 * * * /bin/bash /home/c_comandini/upgrade.sh 1> /home/c_comandini/crontab.log 2> /home/c_comandini/crontab_err.log
 ```
+
+## DynDns
+
+https://www.duckdns.org/domains
