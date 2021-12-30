@@ -4,6 +4,22 @@
 
 with nvm https://github.com/nvm-sh/nvm install node v16.13.1 (the latest LTS at the moment)
 
+on raspberry with ubuntu 20.04 install it via apt
+
+launch this for adding v16 repos to npm
+
+```curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -```
+
+then
+
+```sudo apt -y install nodejs```
+
+test with
+
+```node --version```
+
+the output should be v16.13.1
+
 ## Info
 
 https://api.slack.com/interactivity/slash-commands
@@ -115,7 +131,7 @@ Then execute
 
 for running it into a server you can use https://www.npmjs.com/package/forever
 
-```[sudo] npm install forever -g```
+```sudo npm install forever -g```
 
 then
 
@@ -157,15 +173,19 @@ https://console.cloud.google.com/storage/browser/goran-meme
 https://console.cloud.google.com/compute/instances?authuser=1&project=slackcommands-336122
 
 # Automate upgrade
-```
-cp upgrade.sh ..
+
+```cp upgrade.sh ..
 chmod +x upgrade.sh
 crontab -e
 ```
+
 and add this to upgrade everyday at midnight (adapt it with your home folder path)
+
+```0 0 * * * /bin/bash /home/c_comandini/upgrade.sh 1> /home/c_comandini/crontab.log 2> /home/c_comandini/crontab_err.log
 ```
-0 0 * * * /bin/bash /home/c_comandini/upgrade.sh 1> /home/c_comandini/crontab.log 2> /home/c_comandini/crontab_err.log
-```
+
+automate on raspberry reboot
+```@reboot /bin/bash /home/ubuntu/reboot_me.sh 1> /home/ubuntu/reboot.log 2> /home/ubuntu/reboot_err.log```
 
 ## DynDns
 
